@@ -1,14 +1,12 @@
 from datetime import datetime, timedelta
 from collections import defaultdict
 
-
-
 def get_birthdays_per_week(users):
     birthdays = defaultdict(list)
     current_weekday = datetime.now().weekday()
     next_monday = datetime.now() + timedelta(days=(7 - current_weekday))
     next_sunday = next_monday + timedelta(days=6)
-    
+
     for user in users:
         birthday = user['birthday'].replace(year=datetime.now().year)
         if next_monday <= birthday <= next_sunday:
@@ -16,10 +14,12 @@ def get_birthdays_per_week(users):
             if weekday in [5, 6]:
                 weekday = 0
             birthdays[weekday].append(user['name'])
-    
+
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    
-    for i in range(5):
+
+    sorted_weekdays = sorted(range(7), key=lambda x: (x + 1) % 7)
+
+    for i in sorted_weekdays[:5]:
         if birthdays[i]:
             print(f"{weekdays[i]}: {', '.join(birthdays[i])}")
 
